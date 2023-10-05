@@ -33,7 +33,7 @@ public class CubeSwipeHandler : MonoBehaviour
 
   private void Update()
   {
-    _pressPosition = _inputController.Cube.PointPress.ReadValue<Vector3>();    
+    _pressPosition = _inputController.Cube.PointPress.ReadValue<Vector2>();    
     SetPosition();
   }
 
