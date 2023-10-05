@@ -8,7 +8,7 @@ public class CubeSwipeHandler : MonoBehaviour
   private float _maxPos;
 
   private InputController _inputController;
-  private Vector2 _pressPosition;
+  private Vector3 _pressPosition;
 
   private void Awake()
   {
@@ -33,19 +33,20 @@ public class CubeSwipeHandler : MonoBehaviour
 
   private void Update()
   {
-    _pressPosition = _inputController.Cube.PointPress.ReadValue<Vector2>();
+    _pressPosition = _inputController.Cube.PointPress.ReadValue<Vector3>();    
     SetPosition();
   }
 
   private void SetPosition()
   {
-    Vector2 fingerPos = Camera.main.ScreenToWorldPoint(_pressPosition);
+    Vector3 fingerPos = Camera.main.ScreenToWorldPoint(_pressPosition);
+
     float xPosition = Mathf.Clamp(fingerPos.x, _minPos, _maxPos);
-    Debug.Log(fingerPos);
+    Debug.Log(xPosition);
+
     transform.position = new Vector3(xPosition,
                                      transform.position.y,
                                      transform.position.z);
-
   }
 
 }
