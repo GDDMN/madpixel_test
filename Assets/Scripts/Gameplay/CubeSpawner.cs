@@ -9,6 +9,6 @@ public class CubeSpawner : MonoBehaviour
   public void SpawnCube()
   {
     var newCube = Instantiate(_cube, transform.position, Quaternion.identity);
-    newCube.OnMerge += SpawnCube;
+    //newCube.OnMerge += SpawnCube;
   }
 }

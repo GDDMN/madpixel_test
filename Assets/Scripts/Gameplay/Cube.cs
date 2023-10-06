@@ -3,12 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+[Serializable]
+public struct CubeData
+{
+  public int Level;
+  public Color Color;
+}
+
+
 public class Cube : MonoBehaviour
 {
-  public event Action OnMerge;
+  public event Action<Cube, Cube> OnMerge;
 
   [SerializeField] private List<TextMeshPro> _allNumbers;
-  private int _number = 2;
+
+  public CubeData Data;
+
+  public void Init(int level, Color color)
+  {
+    Data.Level = level;
+    Data.Color = color;
+
+    UpdateCubeNumbers(Data.Level);
+  }
 
   private void UpdateCubeNumbers(int number)
   {
@@ -19,8 +36,8 @@ public class Cube : MonoBehaviour
 
   private void Merging(Collision collision)
   {
-    UpdateCubeNumbers(1 + _number);
-    OnMerge?.Invoke();
+    Cube mergingCube = collision.gameObject.GetComponent<Cube>();
+    OnMerge?.Invoke(this, mergingCube);
   }
 
   private void OnCollisionEnter(Collision collision)

@@ -28,24 +28,44 @@ public partial class @InputController: IInputActionCollection2, IDisposable
             ""id"": ""9d59abdb-3fc0-4d77-b999-9d5c720cc969"",
             ""actions"": [
                 {
-                    ""name"": ""PointPress"",
+                    ""name"": ""PointerPosition"",
                     ""type"": ""Value"",
                     ""id"": ""7c3cff19-52e6-4804-b59c-a6bf5bd1414d"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""PointerPress"",
+                    ""type"": ""Button"",
+                    ""id"": ""7700d71b-ccda-4c2a-ac4d-66774d54d863"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""0d06ad4d-6e16-47c2-aa88-a3138697c3b7"",
-                    ""path"": ""<Mouse>/position"",
+                    ""id"": ""75090f24-f1a3-4903-a3ef-0ec4cd1df75c"",
+                    ""path"": ""<Pointer>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""PointPress"",
+                    ""action"": ""PointerPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f92b91ee-41ce-473a-89e1-c6570cecfe37"",
+                    ""path"": ""<Pointer>/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PointerPress"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -56,7 +76,8 @@ public partial class @InputController: IInputActionCollection2, IDisposable
 }");
         // Cube
         m_Cube = asset.FindActionMap("Cube", throwIfNotFound: true);
-        m_Cube_PointPress = m_Cube.FindAction("PointPress", throwIfNotFound: true);
+        m_Cube_PointerPosition = m_Cube.FindAction("PointerPosition", throwIfNotFound: true);
+        m_Cube_PointerPress = m_Cube.FindAction("PointerPress", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -118,12 +139,14 @@ public partial class @InputController: IInputActionCollection2, IDisposable
     // Cube
     private readonly InputActionMap m_Cube;
     private List<ICubeActions> m_CubeActionsCallbackInterfaces = new List<ICubeActions>();
-    private readonly InputAction m_Cube_PointPress;
+    private readonly InputAction m_Cube_PointerPosition;
+    private readonly InputAction m_Cube_PointerPress;
     public struct CubeActions
     {
         private @InputController m_Wrapper;
         public CubeActions(@InputController wrapper) { m_Wrapper = wrapper; }
-        public InputAction @PointPress => m_Wrapper.m_Cube_PointPress;
+        public InputAction @PointerPosition => m_Wrapper.m_Cube_PointerPosition;
+        public InputAction @PointerPress => m_Wrapper.m_Cube_PointerPress;
         public InputActionMap Get() { return m_Wrapper.m_Cube; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -133,16 +156,22 @@ public partial class @InputController: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_CubeActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_CubeActionsCallbackInterfaces.Add(instance);
-            @PointPress.started += instance.OnPointPress;
-            @PointPress.performed += instance.OnPointPress;
-            @PointPress.canceled += instance.OnPointPress;
+            @PointerPosition.started += instance.OnPointerPosition;
+            @PointerPosition.performed += instance.OnPointerPosition;
+            @PointerPosition.canceled += instance.OnPointerPosition;
+            @PointerPress.started += instance.OnPointerPress;
+            @PointerPress.performed += instance.OnPointerPress;
+            @PointerPress.canceled += instance.OnPointerPress;
         }
 
         private void UnregisterCallbacks(ICubeActions instance)
         {
-            @PointPress.started -= instance.OnPointPress;
-            @PointPress.performed -= instance.OnPointPress;
-            @PointPress.canceled -= instance.OnPointPress;
+            @PointerPosition.started -= instance.OnPointerPosition;
+            @PointerPosition.performed -= instance.OnPointerPosition;
+            @PointerPosition.canceled -= instance.OnPointerPosition;
+            @PointerPress.started -= instance.OnPointerPress;
+            @PointerPress.performed -= instance.OnPointerPress;
+            @PointerPress.canceled -= instance.OnPointerPress;
         }
 
         public void RemoveCallbacks(ICubeActions instance)
@@ -162,6 +191,7 @@ public partial class @InputController: IInputActionCollection2, IDisposable
     public CubeActions @Cube => new CubeActions(this);
     public interface ICubeActions
     {
-        void OnPointPress(InputAction.CallbackContext context);
+        void OnPointerPosition(InputAction.CallbackContext context);
+        void OnPointerPress(InputAction.CallbackContext context);
     }
 }

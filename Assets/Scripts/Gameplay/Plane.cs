@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Plane : MonoBehaviour
 {
-
   [SerializeField] private CubeSwipeHandler _cube;
 
   [SerializeField] private float _minSpawnPosition;
@@ -30,15 +29,17 @@ public class Plane : MonoBehaviour
     SpawnCube();
   }
 
-  private void Init()
-  {
-    //Cubes.Add(SpawnCube());
-  }
-
-  private Cube SpawnCube()
+  private void SpawnCube()
   {
     var cube = Instantiate(_cube, new Vector3(0f, .6f, _zSpawnPos), Quaternion.identity);
     cube.Init(_minSpawnPosition, _maxSpawnPosition);
-    return cube.gameObject.GetComponent<Cube>();
+    cube.OnCollision += SpawnCube;
+  }
+
+  public void Merging(Cube fstCube, Cube scndCube)
+  {
+    GameObject cube = new GameObject();
+    cube.AddComponent<Cube>();
+    cube.GetComponent<Cube>().Data.Level = fstCube.GetComponent<Cube>().Data.Level * 2;
   }
 }

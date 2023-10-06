@@ -6,24 +6,44 @@
             "id": "9d59abdb-3fc0-4d77-b999-9d5c720cc969",
             "actions": [
                 {
-                    "name": "PointPress",
+                    "name": "PointerPosition",
                     "type": "Value",
                     "id": "7c3cff19-52e6-4804-b59c-a6bf5bd1414d",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "PointerPress",
+                    "type": "Button",
+                    "id": "7700d71b-ccda-4c2a-ac4d-66774d54d863",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "",
-                    "id": "0d06ad4d-6e16-47c2-aa88-a3138697c3b7",
-                    "path": "<Mouse>/position",
+                    "id": "75090f24-f1a3-4903-a3ef-0ec4cd1df75c",
+                    "path": "<Pointer>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "PointPress",
+                    "action": "PointerPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f92b91ee-41ce-473a-89e1-c6570cecfe37",
+                    "path": "<Pointer>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerPress",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
