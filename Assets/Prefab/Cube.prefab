@@ -996,7 +996,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.1, y: 1.1, z: 1.1}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8529630473061747035
 MonoBehaviour:
@@ -1017,9 +1017,52 @@ MonoBehaviour:
   - {fileID: 1064389530538811696}
   - {fileID: 7217949311427548270}
   - {fileID: 998038656820295698}
+  _allColors:
+  - {r: 0.039215688, g: 1, b: 0, a: 1}
+  - {r: 0, g: 1, b: 0.7153814, a: 1}
+  - {r: 0, g: 0.32682276, b: 1, a: 1}
+  - {r: 1, g: 0.60544705, b: 0, a: 1}
+  - {r: 0.96787477, g: 1, b: 0, a: 1}
+  - {r: 1, g: 0, b: 0.05632782, a: 1}
+  - {r: 1, g: 0, b: 0.87912035, a: 1}
+  _jumpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 5.87054
+      outSlope: 5.87054
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.023054754
+    - serializedVersion: 3
+      time: 0.49402043
+      value: 1
+      inSlope: 0.023921669
+      outSlope: 0.023921669
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -5.452216
+      outSlope: -5.452216
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.034890506
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _jumpSpeed: 3
   Data:
     Level: 2
     Color: {r: 0.040325522, g: 1, b: 0, a: 1}
+  AlreadyMerging: 0
 --- !u!114 &-6314994784624632328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1041,9 +1084,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5682629690052596694}
   serializedVersion: 2
-  m_Mass: 10
+  m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0

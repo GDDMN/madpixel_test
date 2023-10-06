@@ -4,7 +4,6 @@ using UnityEngine;
 public class Plane : MonoBehaviour
 {
   [SerializeField] private CubeSwipeHandler _cube;
-  [SerializeField] private Cube _spawnedMergedCube;
 
   [SerializeField] private float _minSpawnPosition;
   [SerializeField] private float _maxSpawnPosition;
@@ -34,8 +33,11 @@ public class Plane : MonoBehaviour
   {
     var cube = Instantiate(_cube, new Vector3(0f, .6f, _zSpawnPos), Quaternion.identity);
     cube.Init(_minSpawnPosition, _maxSpawnPosition);
+
     cube.OnCollision += SpawnCube;
     cube.GetComponent<Cube>().OnMerge += Merging;
+
+
   }
 
   public void Merging(Cube fstCube, Cube scndCube)
@@ -43,17 +45,9 @@ public class Plane : MonoBehaviour
     if (fstCube.Data.Level != scndCube.Data.Level)
       return;
 
-    Vector3 fstPos = fstCube.transform.position;
-    
-    var cube = Instantiate(_spawnedMergedCube, fstPos, Quaternion.identity);
-    cube.Init(fstCube.Data.Level * 2, Color.yellow);
-    cube.GetComponent<Rigidbody>().velocity = fstCube.GetComponent<Rigidbody>().velocity;
-    cube.OnMerge += Merging;
+    fstCube.Upgrade(_allCubes);
 
-    fstCube.OnMerge -= Merging;
-    scndCube.OnMerge -= Merging;
-
-    Destroy(fstCube.gameObject);
+    //scndCube.OnMerge -= Merging;
     Destroy(scndCube.gameObject);
   }
 }
