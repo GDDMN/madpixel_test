@@ -33,7 +33,8 @@ public class CubeSwipeHandler : MonoBehaviour
 
   private void Update()
   {
-    _pressPosition = _inputController.Cube.PointPress.ReadValue<Vector2>();    
+    _pressPosition = _inputController.Cube.PointPress.ReadValue<Vector2>();
+    _pressPosition = new Vector3(_pressPosition.x, _pressPosition.y, Camera.main.nearClipPlane);
     SetPosition();
   }
 
