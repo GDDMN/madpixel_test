@@ -74,7 +74,7 @@ public class CubeSwipeHandler : MonoBehaviour
   private void LounchCube()
   {
     _canMove = false;
-    _rigidbody.velocity = Vector3.forward * (_forwardSpeed * Time.deltaTime);
+    _rigidbody.velocity = Vector3.forward * _forwardSpeed;
   }
 
   private void OnCollisionEnter(Collision collision)

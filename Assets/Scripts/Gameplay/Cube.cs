@@ -18,6 +18,7 @@ public class Cube : MonoBehaviour
   [SerializeField] private List<TextMeshPro> _allNumbers;
 
   public CubeData Data;
+  public bool AlreadyMerging = false;
 
   public void Init(int level, Color color)
   {
@@ -25,6 +26,7 @@ public class Cube : MonoBehaviour
     Data.Color = color;
 
     UpdateCubeNumbers(Data.Level);
+    gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
   }
 
   private void UpdateCubeNumbers(int number)
@@ -36,13 +38,21 @@ public class Cube : MonoBehaviour
 
   private void Merging(Collision collision)
   {
+    if (AlreadyMerging)
+      return;
+
+    if (this.Data.Level != collision.gameObject.GetComponent<Cube>().Data.Level)
+      return;
+
     Cube mergingCube = collision.gameObject.GetComponent<Cube>();
+    mergingCube.AlreadyMerging = true;
     OnMerge?.Invoke(this, mergingCube);
+
   }
 
   private void OnCollisionEnter(Collision collision)
   {
-    if(collision.gameObject.layer == 10)
-      Merging(collision); 
+    if (collision.gameObject.layer == 10)
+      Merging(collision);
   }
 }
