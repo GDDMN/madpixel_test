@@ -34,7 +34,7 @@ public class CubeSwipeHandler : MonoBehaviour
   private void OnDisable()
   {
     _inputController.Disable();
-    _inputController.Cube.PointerPress.performed -= context => MovementValidate();
+    
     _inputController.Cube.PointerPress.canceled -= context => LounchCube();
   }
 
@@ -74,14 +74,13 @@ public class CubeSwipeHandler : MonoBehaviour
   private void LounchCube()
   {
     _canMove = false;
+    _inputController.Cube.PointerPress.performed -= context => MovementValidate();
     _rigidbody.velocity = Vector3.forward * _forwardSpeed;
+    
   }
 
   private void OnCollisionEnter(Collision collision)
   {
-    _rigidbody.velocity = Vector3.zero;
-    _rigidbody.useGravity = true;
-
     OnCollision?.Invoke();
     Destroy(this);
   }

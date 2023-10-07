@@ -8,7 +8,7 @@ public class Plane : MonoBehaviour
   [SerializeField] private float _minSpawnPosition;
   [SerializeField] private float _maxSpawnPosition;
   
-  private List<Cube> _allCubes;
+  public List<Cube> _allCubes;
   private readonly float _zSpawnPos = -6;
 
   public List<Cube> Cubes => _allCubes;
@@ -33,11 +33,10 @@ public class Plane : MonoBehaviour
   {
     var cube = Instantiate(_cube, new Vector3(0f, .6f, _zSpawnPos), Quaternion.identity);
     cube.Init(_minSpawnPosition, _maxSpawnPosition);
-
     cube.OnCollision += SpawnCube;
+    _allCubes.Add(cube.gameObject.GetComponent<Cube>());
+
     cube.GetComponent<Cube>().OnMerge += Merging;
-
-
   }
 
   public void Merging(Cube fstCube, Cube scndCube)
@@ -45,9 +44,10 @@ public class Plane : MonoBehaviour
     if (fstCube.Data.Level != scndCube.Data.Level)
       return;
 
-    fstCube.Upgrade(_allCubes);
+    scndCube.Upgrade(_allCubes);
 
-    //scndCube.OnMerge -= Merging;
-    Destroy(scndCube.gameObject);
+    fstCube.OnMerge -= Merging;
+    _allCubes.Remove(fstCube);
+    Destroy(fstCube.gameObject);
   }
 }

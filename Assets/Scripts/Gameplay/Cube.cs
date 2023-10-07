@@ -25,6 +25,7 @@ public class Cube : MonoBehaviour
   public CubeData Data;
   public bool AlreadyMerging = false;
 
+  private Rigidbody _rigidbody;
   private Renderer _renderer;
   private bool flying = false;
   private int colorIndex = 0;
@@ -33,6 +34,7 @@ public class Cube : MonoBehaviour
   private void Start()
   {
     _renderer = gameObject.GetComponent<Renderer>();
+    _rigidbody = gameObject.GetComponent<Rigidbody>();
     UpdateCubeNumbers(Data.Level);
   }
 
@@ -104,6 +106,9 @@ public class Cube : MonoBehaviour
 
   private void OnCollisionEnter(Collision collision)
   {
+    _rigidbody.velocity = Vector3.zero;
+    _rigidbody.useGravity = true;
+
     if (collision.gameObject.layer == 10)
     {
       Merging(collision);
