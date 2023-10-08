@@ -64,14 +64,12 @@ public class Cube : MonoBehaviour
     Cube mergingCube = collision.gameObject.GetComponent<Cube>();
     mergingCube.AlreadyMerging = true;
     OnMerge?.Invoke(this, mergingCube);
-
   }
 
   public void FlyToNextCube(Cube nextMergCube)
   {
     if (nextMergCube == null)
       return;
-
   }
 
   public void Upgrade(List<Cube> allCubes)

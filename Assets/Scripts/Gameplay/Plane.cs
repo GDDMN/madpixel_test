@@ -33,7 +33,7 @@ public class Plane : MonoBehaviour
   {
     var cube = Instantiate(_cube, new Vector3(0f, .6f, _zSpawnPos), Quaternion.identity);
     cube.Init(_minSpawnPosition, _maxSpawnPosition);
-    cube.OnCollision += SpawnCube;
+    cube.OnCollision.AddListener(SpawnCube);
     _allCubes.Add(cube.gameObject.GetComponent<Cube>());
 
     cube.GetComponent<Cube>().OnMerge += Merging;
@@ -44,8 +44,9 @@ public class Plane : MonoBehaviour
     if (fstCube.Data.Level != scndCube.Data.Level)
       return;
 
-    scndCube.Upgrade(_allCubes);
+    //fstCube.GetComponent<CubeSwipeHandler>().OnCollision -= SpawnCube;
 
+    scndCube.Upgrade(_allCubes);
     fstCube.OnMerge -= Merging;
     _allCubes.Remove(fstCube);
     Destroy(fstCube.gameObject);

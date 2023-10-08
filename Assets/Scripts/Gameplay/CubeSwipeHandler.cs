@@ -1,11 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CubeSwipeHandler : MonoBehaviour
 {
-  public event Action OnCollision;
+  public UnityEvent OnCollision;
 
   private float _minPos;
   private float _maxPos;
@@ -34,7 +33,6 @@ public class CubeSwipeHandler : MonoBehaviour
   private void OnDisable()
   {
     _inputController.Disable();
-    
     _inputController.Cube.PointerPress.canceled -= context => LounchCube();
   }
 
@@ -82,6 +80,7 @@ public class CubeSwipeHandler : MonoBehaviour
   private void OnCollisionEnter(Collision collision)
   {
     OnCollision?.Invoke();
+    OnCollision.RemoveAllListeners();
     Destroy(this);
   }
 
