@@ -8,7 +8,7 @@ using System.Collections;
 public struct CubeData
 {
   public int Level;
-  public Color Color;
+  public int ColorNum;
 }
 
 
@@ -29,16 +29,21 @@ public class Cube : MonoBehaviour
 
   private Rigidbody _rigidbody;
   private Renderer _renderer;
-  private bool flying = false;
-  private int colorIndex = 0;
-  private float yJumpPos = 0f;
+  private bool _flying = false;
+  private float _yJumpPos = 0f;
 
-  private void Start()
+  private void Awake()
   {
     _renderer = gameObject.GetComponent<Renderer>();
     _rigidbody = gameObject.GetComponent<Rigidbody>();
+  }
+
+  public void Init(CubeData data){
+    Data.Level = data.Level;
+    Data.ColorNum = data.ColorNum;
+
     UpdateCubeNumbers(Data.Level);
-    _renderer.material.SetColor("_Color", _allColors[colorIndex]);
+    SetColor();
   }
 
   private void UpdateCubeNumbers(int number)
@@ -46,14 +51,19 @@ public class Cube : MonoBehaviour
     foreach (var numText in _allNumbers)
       numText.text = number.ToString();
   }
+  
+  private void SetColor()
+  {
+    _renderer.material.SetColor("_Color", _allColors[Data.ColorNum]);
+  }
 
   private void UpdateColor()
   {
-    colorIndex++;
-    if (colorIndex >= _allColors.Count)
-      colorIndex = 0;
+    Data.ColorNum++;
+    if (Data.ColorNum >= _allColors.Count)
+      Data.ColorNum = 0;
 
-    _renderer.material.SetColor("_Color", _allColors[colorIndex]);
+    _renderer.material.SetColor("_Color", _allColors[Data.ColorNum]);
   }
 
   private void Merging(Collision collision)
@@ -78,33 +88,39 @@ public class Cube : MonoBehaviour
 
     Cube nextMergeCube = allCubes.Find(c => c.Data.Level == Data.Level && c!=this);
 
-    if (nextMergeCube != null)
+    if (nextMergeCube != null 
+        && nextMergeCube.gameObject.GetComponent<CubeSwipeHandler>() == null 
+        && Math.Abs(nextMergeCube.transform.position.x - transform.position.x) < 3.5f
+        && Math.Abs(nextMergeCube.transform.position.z - transform.position.z) < 3.5f)
       JumpToOtherCube(nextMergeCube.transform.position);
+
+    else
+      JumpToOtherCube(transform.position);
   }
 
   private void JumpToOtherCube(Vector3 position)
   {
-    flying = false;
+    _flying = false;
     StartCoroutine(JumpAnimation(position));
   }
 
   private IEnumerator JumpAnimation(Vector3 position)
   {
-    while(!flying && yJumpPos < 1f)
+    while(!_flying && _yJumpPos <= 1f)
     {
-      yJumpPos += _jumpSpeed * Time.deltaTime;
-
       transform.position = new Vector3(transform.position.x,
-                                 _jumpCurve.Evaluate(yJumpPos),
+                                 _jumpCurve.Evaluate(_yJumpPos),
                                  transform.position.z);
 
-      transform.position += new Vector3((position.x - transform.position.x) * yJumpPos/2,
+      transform.position += new Vector3((position.x - transform.position.x) * _yJumpPos / 10,
                                         0f,
-                                        (position.z - transform.position.z) * yJumpPos/2);
+                                        (position.z - transform.position.z) * _yJumpPos / 10);
+
+      _yJumpPos += _jumpSpeed * Time.deltaTime;
       yield return null;
     }
 
-    yJumpPos = 0f;
+    _yJumpPos = 0f;
   }
 
   private void OnCollisionEnter(Collision collision)
@@ -113,9 +129,9 @@ public class Cube : MonoBehaviour
 
     if (collision.gameObject.layer == 10)
     {
-      flying = true;
+      _flying = true;
       Merging(collision);
-      flying = false;
+      _flying = false;
     }
   }
 }
