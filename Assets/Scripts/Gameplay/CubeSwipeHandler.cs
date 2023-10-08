@@ -55,9 +55,7 @@ public class CubeSwipeHandler : MonoBehaviour
       return;
 
     Vector3 fingerPos = Camera.main.ScreenToWorldPoint(_pressPosition);
-
     float xPosition = Mathf.Clamp(fingerPos.x, _minPos, _maxPos);
-    Debug.Log(xPosition);
 
     transform.position = new Vector3(xPosition,
                                      transform.position.y,

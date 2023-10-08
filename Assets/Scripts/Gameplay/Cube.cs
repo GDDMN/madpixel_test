@@ -76,7 +76,8 @@ public class Cube : MonoBehaviour
   {
     Data.Level = Data.Level * 2;
     UpdateCubeNumbers(Data.Level);
-    UpdateColor();
+    UpdateColor(); 
+    
     //Cube nextMergeCube = allCubes.Find(c => c.Data.Level == Data.Level);
 
     //if (nextMergeCube != null)
@@ -104,7 +105,7 @@ public class Cube : MonoBehaviour
 
   private void OnCollisionEnter(Collision collision)
   {
-    _rigidbody.velocity = Vector3.zero;
+    //_rigidbody.velocity = Vector3.zero;
     _rigidbody.useGravity = true;
 
     if (collision.gameObject.layer == 10)

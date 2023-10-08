@@ -1075,6 +1075,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35c8a61635c3be14ab9bda9ccd52f98a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnCollision:
+    m_PersistentCalls:
+      m_Calls: []
   _forwardSpeed: 25
 --- !u!54 &-8887475103071810030
 Rigidbody:
@@ -1084,13 +1087,13 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5682629690052596694}
   serializedVersion: 2
-  m_Mass: 0.2
-  m_Drag: 0
-  m_AngularDrag: 0
+  m_Mass: 5
+  m_Drag: 1
+  m_AngularDrag: 1
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 2
   m_CollisionDetection: 0
 --- !u!1 &8083022830181909611
 GameObject:

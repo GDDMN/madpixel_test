@@ -46,9 +46,9 @@ public class Plane : MonoBehaviour
 
     //fstCube.GetComponent<CubeSwipeHandler>().OnCollision -= SpawnCube;
 
-    scndCube.Upgrade(_allCubes);
-    fstCube.OnMerge -= Merging;
-    _allCubes.Remove(fstCube);
-    Destroy(fstCube.gameObject);
+    fstCube.Upgrade(_allCubes);
+    scndCube.OnMerge -= Merging;
+    _allCubes.Remove(scndCube);
+    Destroy(scndCube.gameObject);
   }
 }
