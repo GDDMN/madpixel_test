@@ -82,6 +82,9 @@ public class Cube : MonoBehaviour
   public void Upgrade(List<Cube> allCubes)
   {
     Data.Level = Data.Level * 2;
+    G.Instance.Currency.Scores.Value += (ulong)Data.Level;
+
+
     UpdateCubeNumbers(Data.Level);
     UpdateColor();
     _mergeEffect.Play();

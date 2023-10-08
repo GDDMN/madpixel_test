@@ -5,4 +5,6 @@ using UnityEngine;
 public class G : Singleton<G>
 {
   public UI UI;
+
+  public Currency Currency = new Currency();
 }
