@@ -31,7 +31,7 @@ public class Cube : MonoBehaviour
   private Renderer _renderer;
   private bool _flying = false;
   private float _yJumpPos = 0f;
-
+  Vector3 _position;
   private void Awake()
   {
     _renderer = gameObject.GetComponent<Renderer>();
@@ -88,26 +88,53 @@ public class Cube : MonoBehaviour
     UpdateCubeNumbers(Data.Level);
     UpdateColor();
     _mergeEffect.Play();
+    StopCoroutine(JumpAnimation());
 
-    Cube nextMergeCube = allCubes.Find(c => c.Data.Level == Data.Level && c!=this);
+    List<Cube> unLevelCubes = allCubes.FindAll(c => c.Data.Level == Data.Level && c != this);
+
+    Cube nextMergeCube = FindNearCube(unLevelCubes);
 
     if (nextMergeCube != null 
-        && nextMergeCube.gameObject.GetComponent<CubeSwipeHandler>() == null 
+        && nextMergeCube.gameObject.GetComponent<CubeSwipeHandler>() == null
         && Math.Abs(nextMergeCube.transform.position.x - transform.position.x) < 3.5f
         && Math.Abs(nextMergeCube.transform.position.z - transform.position.z) < 3.5f)
-      JumpToOtherCube(nextMergeCube.transform.position);
-
+      _position = nextMergeCube.transform.position;
     else
-      JumpToOtherCube(transform.position);
+      _position = transform.position;
+
+    JumpToOtherCube(_position);
+  }
+
+  private Cube FindNearCube(List<Cube> allCubes)
+  {
+
+    Cube nearCube;
+
+    if (allCubes.Count <= 0)
+      return null;
+
+    nearCube = allCubes[0];
+
+    foreach (var cube in allCubes)
+    {
+      if (Math.Abs(transform.position.x - cube.transform.position.x) < Math.Abs(transform.position.x - nearCube.transform.position.x) &&
+          Math.Abs(transform.position.z - cube.transform.position.z) < Math.Abs(transform.position.z - nearCube.transform.position.z))
+        nearCube = cube;
+    }
+
+    return nearCube;
   }
 
   private void JumpToOtherCube(Vector3 position)
   {
+    if (!_flying)
+      return;
+
     _flying = false;
-    StartCoroutine(JumpAnimation(position));
+    StartCoroutine(JumpAnimation());
   }
 
-  private IEnumerator JumpAnimation(Vector3 position)
+  private IEnumerator JumpAnimation()
   {
     while(!_flying && _yJumpPos <= 1f)
     {
@@ -115,14 +142,15 @@ public class Cube : MonoBehaviour
                                  _jumpCurve.Evaluate(_yJumpPos),
                                  transform.position.z);
 
-      transform.position += new Vector3((position.x - transform.position.x) * _yJumpPos / 10,
+      transform.position += new Vector3((_position.x - transform.position.x) * _yJumpPos / 10,
                                         0f,
-                                        (position.z - transform.position.z) * _yJumpPos / 10);
+                                        (_position.z - transform.position.z) * _yJumpPos / 10);
 
       _yJumpPos += _jumpSpeed * Time.deltaTime;
       yield return null;
     }
 
+    _flying = true;
     _yJumpPos = 0f;
   }
 
@@ -134,7 +162,14 @@ public class Cube : MonoBehaviour
     {
       _flying = true;
       Merging(collision);
-      _flying = false;
+    }
+  }
+
+  private void OnCollisionStay(Collision collision)
+  {
+    if (collision.gameObject.layer == 10)
+    {
+      Merging(collision);
     }
   }
 }
