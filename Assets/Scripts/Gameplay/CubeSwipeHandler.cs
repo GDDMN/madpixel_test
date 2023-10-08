@@ -16,6 +16,7 @@ public class CubeSwipeHandler : MonoBehaviour
   private Rigidbody _rigidbody;
 
   [SerializeField] private float _forwardSpeed;
+  [SerializeField] private TrailRenderer _trail;
 
   private void Awake()
   {
@@ -80,8 +81,10 @@ public class CubeSwipeHandler : MonoBehaviour
     if ((collision.gameObject.layer != 10) && (collision.gameObject.layer != 12))
       return;
 
+
     OnCollision?.Invoke();
     OnCollision.RemoveAllListeners();
+    Destroy(_trail);
     Destroy(this);
   }
 
