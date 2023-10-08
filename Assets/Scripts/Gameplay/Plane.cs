@@ -44,8 +44,6 @@ public class Plane : MonoBehaviour
     if (fstCube.Data.Level != scndCube.Data.Level)
       return;
 
-    //fstCube.GetComponent<CubeSwipeHandler>().OnCollision -= SpawnCube;
-
     fstCube.Upgrade(_allCubes);
     scndCube.OnMerge -= Merging;
     _allCubes.Remove(scndCube);

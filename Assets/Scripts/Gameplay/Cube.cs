@@ -22,6 +22,8 @@ public class Cube : MonoBehaviour
   [SerializeField] private AnimationCurve _jumpCurve;
   [SerializeField] private float _jumpSpeed;
 
+  [SerializeField] private ParticleSystem _mergeEffect;
+
   public CubeData Data;
   public bool AlreadyMerging = false;
 
@@ -36,6 +38,7 @@ public class Cube : MonoBehaviour
     _renderer = gameObject.GetComponent<Renderer>();
     _rigidbody = gameObject.GetComponent<Rigidbody>();
     UpdateCubeNumbers(Data.Level);
+    _renderer.material.SetColor("_Color", _allColors[colorIndex]);
   }
 
   private void UpdateCubeNumbers(int number)
@@ -70,8 +73,9 @@ public class Cube : MonoBehaviour
   {
     Data.Level = Data.Level * 2;
     UpdateCubeNumbers(Data.Level);
-    UpdateColor(); 
-    
+    UpdateColor();
+    _mergeEffect.Play();
+
     Cube nextMergeCube = allCubes.Find(c => c.Data.Level == Data.Level && c!=this);
 
     if (nextMergeCube != null)
