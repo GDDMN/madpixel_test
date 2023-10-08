@@ -66,37 +66,37 @@ public class Cube : MonoBehaviour
     OnMerge?.Invoke(this, mergingCube);
   }
 
-  public void FlyToNextCube(Cube nextMergCube)
-  {
-    if (nextMergCube == null)
-      return;
-  }
-
   public void Upgrade(List<Cube> allCubes)
   {
     Data.Level = Data.Level * 2;
     UpdateCubeNumbers(Data.Level);
     UpdateColor(); 
     
-    //Cube nextMergeCube = allCubes.Find(c => c.Data.Level == Data.Level);
+    Cube nextMergeCube = allCubes.Find(c => c.Data.Level == Data.Level && c!=this);
 
-    //if (nextMergeCube != null)
-    //  JumpToOtherCube(nextMergeCube.transform.position);
+    if (nextMergeCube != null)
+      JumpToOtherCube(nextMergeCube.transform.position);
   }
 
   private void JumpToOtherCube(Vector3 position)
   {
+    flying = false;
     StartCoroutine(JumpAnimation(position));
   }
 
   private IEnumerator JumpAnimation(Vector3 position)
   {
-    while(transform.position != position)
+    while(!flying && yJumpPos < 1f)
     {
       yJumpPos += _jumpSpeed * Time.deltaTime;
-      transform.position = new Vector3((transform.position.x - position.x) * yJumpPos,
-                                        _jumpCurve.Evaluate(yJumpPos),
-                                        (transform.position.z - position.z) * yJumpPos);
+
+      transform.position = new Vector3(transform.position.x,
+                                 _jumpCurve.Evaluate(yJumpPos),
+                                 transform.position.z);
+
+      transform.position += new Vector3((position.x - transform.position.x) * yJumpPos/2,
+                                        0f,
+                                        (position.z - transform.position.z) * yJumpPos/2);
       yield return null;
     }
 
@@ -105,11 +105,11 @@ public class Cube : MonoBehaviour
 
   private void OnCollisionEnter(Collision collision)
   {
-    //_rigidbody.velocity = Vector3.zero;
     _rigidbody.useGravity = true;
 
     if (collision.gameObject.layer == 10)
     {
+      flying = true;
       Merging(collision);
       flying = false;
     }
