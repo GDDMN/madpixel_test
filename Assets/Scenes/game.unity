@@ -169,7 +169,6 @@ MonoBehaviour:
   m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
-  m_CursorLockBehavior: 0
 --- !u!114 &106219449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -643,7 +642,7 @@ Camera:
     height: 1
   near clip plane: 10
   far clip plane: 1010.01
-  field of view: 60
+  field of view: 67
   orthographic: 0
   orthographic size: 11.4
   m_Depth: 0
